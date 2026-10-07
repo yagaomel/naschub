@@ -1,0 +1,17 @@
+import fs from 'fs';import vm from 'vm';
+const ctx={console};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync('/workspace/naschub/part11.js','utf8'),ctx);
+const A=ctx.ADAPTERS.porto;let pass=0,fail=0;const ok=(n,c)=>{c?(pass++,console.log('PASS  '+n)):(fail++,console.log('FAIL  '+n));};
+ok('normDate dd/mm/aaaa -> ISO',A.normDate('05/03/2027')==='2027-03-05');
+const raw=A.sampleRaw();ok('amostra traz 5 contratos',raw.length===5);
+const m0=A.mapPolicy(raw[0]);
+ok('conversão de datas vig/fim',m0.vig==='2026-03-05'&&m0.fim==='2027-03-05');
+ok('normalização de ramo AUTO->Auto',m0.ramo==='Auto');
+ok('status ATIVO->ATIVA',m0.status==='ATIVA');
+ok('comissão 25% de R$ 7.860,40 = R$ 1.965',m0.comm===1965);
+ok('nº PTO + origem PORTO',m0.num==='PTO-48291057'&&m0.origem==='PORTO');
+ok('AGUARDANDO_PAGAMENTO->AGUARDANDO',A.mapPolicy(raw[2]).status==='AGUARDANDO');
+ok('CANCELLADO->CANCELADA',A.mapPolicy(raw[4]).status==='CANCELADA');
+ok('EMPRESARIAL->Empresarial',A.mapPolicy(raw[1]).ramo==='Empresarial');
+ok('comissão 22% de R$ 41.280 = R$ 9.081',A.mapPolicy(raw[1]).comm===9082);
+console.log('===== ADAPTERS: '+pass+' pass · '+fail+' fail =====');process.exit(fail?1:0);

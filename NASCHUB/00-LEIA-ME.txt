@@ -1,0 +1,47 @@
+NASC HUB — ENTREGA COMPLETA
+gerado em 2026-10-07 · YNascimento
+========================================
+
+ESTRUTURA
+00-LEIA-ME.txt ........ este arquivo
+app/naschub-preview.html ......... O PRODUTO INTEIRO (16 módulos + landing + login + legais), 1 arquivo, 100% offline · tema v4 "Aurora de Manhã"
+pitch/naschub-pitch-deck.html .... O PITCH: 10 slides, teclado (← → N F), roteiro 30s por slide, céu INTERATIVO no slide 5
+deploy/ .................. pacote Netlify Drop PRONTO (index.html + 4 API functions ESM + netlify.toml + README)
+codigo-fonte/ ............ os 11 módulos-fonte (part0..part10) — é daqui que se continua o desenvolvimento
+testes/ .................. as 4 suítes + emulador local de API
+imagens/ ................. logo Escudo-Órbita, render 3D do céu, banner 16:9 (geradas para o pitch)
+provas/ .................. screenshots das telas capturadas no Chromium real (0 erros de console)
+
+COMO RODAR (sem instalar nada)
+- App: abrir app/naschub-preview.html no browser → "Entrar no hub (demo)"
+  Atalhos: ?demo=1 (já logado) · ?demo=1&birth=13#/dashboard (nascimento automático)
+  Painel de teste ao vivo: pill "🩺 DIAGNÓSTICO" na sidebar
+- Pitch: abrir pitch/naschub-pitch-deck.html · N = roteiro · F = tela cheia · ?s=5&sign=1 = auto-assina a renovação
+- Nuvem real: soltar deploy/ no Netlify Drop → chip "● NUVEM" na sidebar, estado por usuário, segredos cifrados
+
+ARQUITETURA DO CÓDIGO (ordem de build)
+part0.html (shell + CSS base) + part6.css injetado no </style>
+concatenados em: part1, part2, part3, part4, part5, part10, part7 (boot no fim), part8 (nuvem NH), part9 (céu NHsky)
+ver: build.sh
+
+TESTES (status desta entrega)
+smoke-front .......... 85 checks (jsdom): módulos, fluxos, ren-close/birth, editor segredos, nuvem via fetch stub
+smoke-multiusuario ... 6 checks: 2 jsdoms × API real × store compartilhada
+test-backend ......... 25 checks: state/login/secrets/integrations-test
+smoke-pitch-deck ..... 8 checks: navegação, teclas, roteiros, céu
+Chromium 154 ......... 0 erros de console em 10 rotas/slides capturados
+
+DESENHO (v4 "Aurora de Manhã")
+papel #F5F3EE · tinta #0B1B2B · esmeralda #0E9F77 · âmbar #B97A12 · violeta #5B4FE0
+Fraunces (display/números) · Space Grotesk (UI) · Inter · JetBrains Mono · raios 8-10px · hairlines
+exceção assinada: o Céu da Operação permanece escuro como painel-quadro dentro do app claro
+
+REAL × MOCK (declaração honesta)
+REAL: todo o front, 4 endpoints de API, criptografia AES-256-GCM, multiusuário, RBAC, wizards, exports
+MOCK: dados do tenant Nascor e respostas das seguradoras (sempre rotuladas "simulado")
+FILA: adaptador Porto Seguro (1º), Sul, Tokio, HDI, Mapfre · blobs→Firestore quando escalar · auth além do token MAC
+
+ROADMAP DECIDIDO (próximos passos)
+1. deep-link ?demo=1#/selftest (boot força dashboard antes) · 2. deploy no Netlify real · 3. adaptador Porto · 4. logo vetorizado
+
+NascHUB © 2026 · Todos os direitos reservados · Desenvolvido por YNascimento
